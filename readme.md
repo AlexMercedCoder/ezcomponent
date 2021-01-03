@@ -172,3 +172,45 @@ When the component.update function is used to update the info here is what happe
 - Any methods you want to add to the component should be defined in initial so they are available to the other methods.
 
 - Any event listeners should be configured in postRender so the event listener are re-established after re-rendering.
+
+## Example for Reference
+
+```js
+      ezcomponent({
+        name: "my-component",
+        info: {
+          count: 1,
+        },
+        styles: (info, props, el) => {
+          return `
+          button {
+              background-color: red;
+              color: white;
+              `;
+        },
+        render: (info, props, el) => {
+          return `<button>${info.count}</button>`;
+        },
+        initial: (info, props, el) => {
+          console.log("initial");
+        },
+        preRender: (info, props, el) => {
+          console.log("pre-render");
+        },
+        postRender: (info, props, el) => {
+          console.log("post-render");
+          el.shadowRoot
+            .querySelector("button")
+            .addEventListener("click", () => {
+              el.update({ count: info.count + 1 });
+            });
+        },
+        disconnect: (info, props, el) => {
+          console.log("disconnect");
+        },
+        postInitial: (info, props, el) => {
+          console.log("postInitial");
+        },
+      });
+
+```
